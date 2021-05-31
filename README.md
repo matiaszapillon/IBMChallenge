@@ -14,3 +14,25 @@ Guide instalation Linux (Debian based) environment:
 - sudo apt-get install python3-tk #Exercise with GUI Interface
 - python3 startChallenge.py
 - python3 startChallengeGUI.py
+
+
+
+How to test 'startChallenge.py':
+- run the file:
+    python3 startChallenge.py
+- input the upper-right coordinates of the plateau and the position,heading and instructions for each rover.
+    ej: 5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM 1 1 W RLRRMLLLM 1 2 N RLRRMLLLM
+- see the result in console
+    ej expected output: 1 3 N 5 1 E 2 0 S 0 1 W 
+
+
+How to test 'startChallengeGUI.py'
+- run the file
+    python3 startChallengeGUI.py
+- input the dimensions of the plateau grid and press 'Create GRID' button
+    ej: 5 5
+- input the initial position of the Rover with the current heading and press 'Insert initial position'
+    ej: 1 3 N
+- input the instructions of the Rover and press 'Run instructions'
+    ej: RLRRMLLLM
+- The rover will appear in the grid with the current Heading.
