@@ -7,7 +7,7 @@ splittedInputString = (input("Input the rover's instructions.\n")).split(' ') # 
 plateauGrid = int(splittedInputString[0]),int(splittedInputString[1]) 
 roversInstructions = splittedInputString[2:] #get the input related to rover's instructions without taking into account the upper-right coordinates of the plateau
 size = len(roversInstructions)
-numberOfRovers = size / 4 #Each rover is contained in every 4 elements (Position, heading, instructions) Ej: [0,1,M,RLLRM] => 1 Rover
+numberOfRovers = size / 4 #Each rover is contained in 4 positions of the array (Position, heading, instructions) Ej: [0,1,M,RLLRM] => 1 Rover
 roversInstructions = numpy.array_split(roversInstructions, numberOfRovers)
 
 class Rover:
@@ -26,7 +26,7 @@ for rover in roversInstructions:
 
 
 def split(instructions):
- return [char for char in instructions];
+    return [char for char in instructions];
 
 #Heading
 def calculateNewHeadingFromWest(position,rover): 
@@ -72,8 +72,8 @@ def calculateNewCoordinateFromEast(instruction,rover):
 
 for rover in roverList:
 
-    instructionsInArray = split(rover.instructions);
-    for instruction in instructionsInArray:
+    splittedInstructions = split(rover.instructions);
+    for instruction in splittedInstructions:
         if rover.heading == 'W':
             calculateNewCoordinateFromWest(instruction,rover)
             calculateNewHeadingFromWest(instruction,rover)
@@ -95,6 +95,6 @@ def showResults(roverObjectList):
     output = ""
     for rover in roverList:
         output = output + ( str(rover.position[0]) + " " +str(rover.position[1]) + " " + rover.heading) + " "
-    print(str(output))
+    print(output)
 
 showResults(roverList)

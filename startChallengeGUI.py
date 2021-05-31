@@ -1,38 +1,17 @@
 import tkinter as tk
+
 root = tk.Tk()
 root.geometry("1080x720")
+
 root.title(string="IBM Challenge")
-
 titleLabel = tk.Label(root,text = "Welcome to IBM Challenge")
+titleLabel.grid(row=0, column=0)
 
-titleLabel.grid(padx=25,row=0, column=0)
-
-gridInputLabel = tk.Label( text = "Input grid dimensions")
-gridInputLabel.grid(pady=25,row=1, column=0)
-
-gridentry = tk.Entry(root, width=10)
-roverInputEntry = tk.Entry(root, width=10) 
-roverInputInstructionEntry = tk.Entry(root, width=15)
-roverInitialPositionEntry = tk.Entry(root,width = 10)
-roverFinalPositionEntry = tk.Entry(root,width = 10)
-
-gridentry.grid(row=1, column=1)
-
-class Rover:
-    def __init__(self, position, heading, instructions):
-        self.position = position
-        self.heading = heading
-        self.instructions = instructions
-
-rover = Rover([0,0], '', '')
-
-#Grid dimensions
-plateauGrid = [0,0]
 def createGrid(plateauGrid):
     columns = plateauGrid[0] + 1 
     rows = plateauGrid[1] + 1
-    #Start PlateauGrid in row 3
 
+    #Start PlateauGrid in row 5
     #Define numbers in rows/columns
     for c in range(columns):
         tk.Label(root, text=(c)).grid(padx=25,row= rows + 5, column=c+1)
@@ -44,21 +23,27 @@ def createGrid(plateauGrid):
     for r in range(0, rows):
         for c in range(0, columns):
             cell = tk.Entry(root, width=10, state='disabled')
-            cell.grid(row=r+5, column=c+1)
+            cell.grid(padx=15,row=r+5, column=c+1)
             cell.insert(0, '({}, {})'.format(r, c))
 
     initialRow = rows + 6
     createRoverInitialPositionButton(initialRow)
     createRoverInstructionsButton(initialRow + 1)
 
+def setGridDimensions():
+    splittedInput = gridInputEntry.get().split(' ')
+    global plateauGrid 
+    plateauGrid = int(splittedInput[0]),int(splittedInput[1])
+    createGrid(plateauGrid)
+
 def createRoverInitialPositionButton(initialRow):
-    roverPosition = tk.Label( text = "Input Rover initial position")
-    roverPosition.grid(pady=25,row=initialRow, column=0)
+    roverPositionLabel = tk.Label( text = "Input Rover initial position")
+    roverPositionLabel.grid(pady=25,row=initialRow, column=0)
 
     roverInputEntry.grid(padx=5,pady=25, row= initialRow, column=1)
     
-    insertRoverPositionButton = tk.Button(root, text = "Insert values", command = lambda: setRoverInitialPosition(initialRow -2)) #-2 to start in coordinates y=0
-    insertRoverPositionButton.grid(row=initialRow, column=3)
+    insertRoverPositionButton = tk.Button(root, text = "Insert initial position", width = 20, command = lambda: setRoverInitialPosition(initialRow -2)) #-2 to start in coordinates y=0
+    insertRoverPositionButton.grid(row=initialRow, column=2)
 
 def createRoverInstructionsButton(initialRow):
     roverInstructions = tk.Label( text = "Input Rover instructions")
@@ -66,64 +51,46 @@ def createRoverInstructionsButton(initialRow):
 
     roverInputInstructionEntry.grid(padx=5,pady=25, row= initialRow, column=1)
     
-    insertRoverInstructionsButton = tk.Button(root, text = "Insert values", command = lambda: setRoverFinalPosition(initialRow - 3)) #-3 to start in coordinates y=0
-    insertRoverInstructionsButton.grid(row=initialRow, column=3)
+    insertRoverInstructionsButton = tk.Button(root, text = "Run the instructions", width = 20, command = lambda: setRoverFinalPosition(initialRow - 3)) #-3 to start in coordinates y=0
+    insertRoverInstructionsButton.grid(row=initialRow, column=2)
 
 def setRoverInitialPosition(y):    
     roverPosition = roverInputEntry.get().split(' ')
     xRover = int(roverPosition[0])
     yRover = int(roverPosition[1])
-    rover.position = [int(roverPosition[0]),int(roverPosition[1])]
+    rover.position = [xRover,yRover]
     rover.heading = roverPosition[2]
-    heading = roverPosition[2]
-    entry_text = tk.StringVar()
-    roverInitialPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=entry_text)
-    new_text = "Rover("+heading +")"
-    entry_text.set(new_text)
+    roverPositionText = tk.StringVar()
+    roverInitialPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=roverPositionText)
+    new_text = "Rover("+rover.heading +")"
+    roverPositionText.set(new_text)
     roverInitialPositionEntry.grid(row=y - yRover, column=xRover+1)
 
 def split(instructions):
- return [char for char in instructions];
+    return [char for char in instructions];
 
 def setRoverFinalPosition(y):
-    print("setRoverFinalPosition()\n")
     rover.instructions = split(roverInputInstructionEntry.get())
     calculateFinalPosition()
     showRoverInFinalPosition(y)
 
 def showRoverInFinalPosition(y):
-    entry_text = tk.StringVar()
-    roverFinalPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=entry_text)
+    #Insert new Rover position
+    roverFinalPositionText = tk.StringVar()
+    roverFinalPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=roverFinalPositionText)
     new_text = "Rover("+rover.heading +")"
-    entry_text.set(new_text)
+    roverFinalPositionText.set(new_text)
     roverFinalPositionEntry.grid(row=y - rover.position[1], column=rover.position[0]+1)
     
-
-
-    print("rover input")
-    print(roverInputEntry.get())
-    print((roverInputEntry.get()).split(' '))
+    #Delete Rover initial position 
     splittedRoverInput = roverInputEntry.get().split(' ')
     xRoverInitial = int(splittedRoverInput[0])
     yRoverInitial = int(splittedRoverInput[1])
-    entryRoverInitialPositionText = tk.StringVar()
-    roverInitialPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=entryRoverInitialPositionText)
+    roverInitialPositionText = tk.StringVar()
+    roverInitialPositionEntry = tk.Entry(root, width=10, state='disabled', textvariable=roverInitialPositionText)
     cleanText = ""
-    entryRoverInitialPositionText.set(cleanText)
+    roverInitialPositionText.set(cleanText)
     roverInitialPositionEntry.grid(row=y - yRoverInitial, column=xRoverInitial+1)
-    print(xRoverInitial)
-    print(yRoverInitial)
-    print(roverInputEntry.get())
-
-
-def setGridDimensions():
-    splittedInput = gridentry.get().split(' ')
-    global plateauGrid 
-    plateauGrid = int(splittedInput[0]),int(splittedInput[1])
-    createGrid(plateauGrid)
-
-insertGridDimensionsButton = tk.Button(root, text = "Insert values", command = setGridDimensions)
-insertGridDimensionsButton.grid(padx=25, row=1, column=3)
 
 #Heading
 def calculateNewHeadingFromWest(position,rover): 
@@ -170,8 +137,6 @@ def calculateNewCoordinateFromEast(instruction,rover):
 
 def calculateFinalPosition():
     for instruction in rover.instructions:
-        print(rover.position)
-        print(rover.heading)
         if rover.heading == 'W':
             calculateNewCoordinateFromWest(instruction,rover)
             calculateNewHeadingFromWest(instruction,rover)
@@ -188,15 +153,34 @@ def calculateFinalPosition():
             calculateNewCoordinateFromEast(instruction,rover)
             calculateNewHeadingFromEast(instruction,rover)
 
-    
-    
 
-    print(roverInputEntry)
-    print(roverInputEntry.get())
-    print(rover.position)
-    print(rover.heading)
-    print(rover.instructions)
 
+#Initialize Rover
+class Rover:
+    def __init__(self, position, heading, instructions):
+        self.position = position
+        self.heading = heading
+        self.instructions = instructions
+
+rover = Rover([0,0], '', '')
+
+plateauGrid = [0,0] #Initialize GRID
+
+#Grid dimensions
+gridInputLabel = tk.Label( text = "Input grid dimensions")
+gridInputLabel.grid(pady=25,row=1, column=0)
+
+gridInputEntry = tk.Entry(root, width=10)
+gridInputEntry.grid(row=1, column=1)
+
+roverInputEntry = tk.Entry(root, width=10) 
+roverInputInstructionEntry = tk.Entry(root, width=15)
+roverInitialPositionEntry = tk.Entry(root,width = 10)
+roverFinalPositionEntry = tk.Entry(root,width = 10)
+
+
+insertGridDimensionsButton = tk.Button(root, text = "Create GRID", command = setGridDimensions)
+insertGridDimensionsButton.grid(padx=25, row=1, column=2)
 
 root.mainloop()
 
