@@ -26,7 +26,13 @@ def createGrid(plateauGrid):
         tk.Label(root, text=(c)).grid(padx=25,row= rows + 5, column=c+1)
 
     for r in range(rows):
-        tk.Label(root, text=(rows -1 - r)).grid(pady=25,row=r+5, column=0 , sticky='ns')
+        tk.Label(root, text=(rows -1 - r)).grid(pady=25,row=r+5, column=0)
+        
+    for r in range(0, rows):
+        for c in range(0, columns):
+            cell = tk.Entry(root, width=10, state='disabled')
+            cell.grid(row=r+5, column=c+1)
+            cell.insert(0, '({}, {})'.format(r, c))
 
     initialRow = rows + 6
     createRoverInitialPositionButton(initialRow)
@@ -45,8 +51,11 @@ def setRoverInitialPosition(y):
     xRover = int(roverPosition[0])
     yRover = int(roverPosition[1])
 
-    roverPositionLabel = tk.Label( text = "Rover")
-    roverPositionLabel.grid(row= y - yRover, column=xRover+1)
+    entry_text = tk.StringVar()
+    entry = tk.Entry(root, width=10, state='disabled', textvariable=entry_text)
+    new_text = "Rover"
+    entry_text.set(new_text)
+    entry.grid(row=y - yRover, column=xRover+1)
 
 def setGridDimensions():
     splittedInput = gridentry.get().split(' ')
