@@ -55,7 +55,7 @@ def calculateNewHeadingFromEast(position,rover):
 
 #Position
 def calculateNewCoordinateFromWest(instruction,rover): 
-    if instruction == 'M':
+    if instruction == 'M' and rover.position[0] > 0:
         rover.position[0] -= 1
     
 def calculateNewCoordinateFromNorth(instruction,rover): 
@@ -63,7 +63,7 @@ def calculateNewCoordinateFromNorth(instruction,rover):
         rover.position[1] += 1
 
 def calculateNewCoordinateFromSouth(instruction,rover): 
-    if instruction == 'M':
+    if instruction == 'M' and rover.position[1] > 0:
         rover.position[1] -= 1
 
 def calculateNewCoordinateFromEast(instruction,rover): 
@@ -92,13 +92,9 @@ for rover in roverList:
 
 
 def showResults(roverObjectList):
-    output = ''
+    output = ""
     for rover in roverList:
-        print(rover.position)
-        print(rover.heading)
-        #output = output + rover.position
-        #output = output + rover.heading + ' '
-    #print(output)     
+        output = output + ( str(rover.position[0]) + " " +str(rover.position[1]) + " " + rover.heading) + " "
+    print(str(output))
 
 showResults(roverList)
-
