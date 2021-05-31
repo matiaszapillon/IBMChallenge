@@ -3,9 +3,9 @@ import numpy
 
 print("Starting program")
 
-splitedInputString = (input("Input the rover's instructions.\n")).split(' ') # Ej: "5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM 1 1 W RLRRMLLLM 1 2 N RLRRMLLLM"
-plateauGrid = int(splitedInputString[0]),int(splitedInputString[1]) 
-roversInstructions = splitedInputString[2:] #get the input related to rover's instructions without taking into account the upper-right coordinates of the plateau
+splittedInputString = (input("Input the rover's instructions.\n")).split(' ') # Ej: "5 5 1 2 N LMLMLMLMM 3 3 E MMRMMRMRRM 1 1 W RLRRMLLLM 1 2 N RLRRMLLLM"
+plateauGrid = int(splittedInputString[0]),int(splittedInputString[1]) 
+roversInstructions = splittedInputString[2:] #get the input related to rover's instructions without taking into account the upper-right coordinates of the plateau
 size = len(roversInstructions)
 numberOfRovers = size / 4 #Each rover is contained in every 4 elements (Position, heading, instructions) Ej: [0,1,M,RLLRM] => 1 Rover
 roversInstructions = numpy.array_split(roversInstructions, numberOfRovers)
